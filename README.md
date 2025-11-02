@@ -1,5 +1,9 @@
 # photo-smart-merge
 
+<div align="center">
+  <img src="smerger.png" alt="Photo Smart Merge Logo" width="200"/>
+</div>
+
 **Purpose:** Merge photos from `Google Fotos` into `MobileBackup` on a NAS while:
 - detecting **exact duplicates** (jdupes) and **visual near-duplicates** (pHash),
 - always keeping the **better** version (by type/quality/resolution/exif/size),
