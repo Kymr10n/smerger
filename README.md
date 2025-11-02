@@ -1,4 +1,4 @@
-# smerger
+# smerger: smart foto merger
 
 <div align="center">
   <img src="smerger.png" alt="Photo Smart Merge Logo" width="200"/>
