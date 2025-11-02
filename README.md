@@ -34,11 +34,6 @@
    - Configure SSH client
    - Set up passwordless SSH access to your remote target
    - Create and test Docker context for remote deployment
-   
-   **Note:** Make sure your deployment target hostname is resolvable. If you have DNS issues, either:
-   - Use the target IP address directly in your `.env` file (`NAS_HOST=192.168.1.100`)
-   - Add the hostname to your `/etc/hosts` file
-   - Configure your network/DNS properly
 
 3. **Optional:** Manage Docker contexts easily:
    ```bash
