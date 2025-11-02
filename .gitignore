@@ -1,0 +1,13 @@
+.DS_Store
+.idea/
+.vscode/*.log
+__pycache__/
+*.pyc
+dist/
+build/
+.reports/
+.quarantine/
+
+# Environment files
+.env
+.env.local

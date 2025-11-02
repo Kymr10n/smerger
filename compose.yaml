@@ -1,0 +1,19 @@
+services:
+  photo-smart-merge:
+    build: .
+    image: your-username/photo-smart-merge:latest
+    container_name: photo-smart-merge
+    user: "${DOCKER_USER:-1000:1000}" # adjust to your NAS user uid:gid if needed
+    environment:
+      - TZ=${TZ:-Europe/Berlin}
+      - ROOT_DIR=${ROOT_DIR:-/data}
+      - MASTER_DIR=${MASTER_DIR:-MobileBackup}
+      - SOURCE_DIR=${SOURCE_DIR:-Google Fotos}
+      - DRY_RUN=${DRY_RUN:-1}               # 1 = plan only; set to 0 to execute
+      - PHASH_THRESHOLD=${PHASH_THRESHOLD:-8}
+      - QUALITY_ORDER=${QUALITY_ORDER:-raw,heic,jpeg,png,other}
+      - EXTS=${EXTS:-jpg,jpeg,png,heic,heif,tif,tiff,cr2,cr3,nef,arw,dng,mp4,mov,m4v}
+    volumes:
+      - ${PHOTOS_PATH:-/path/to/your/photos}:${ROOT_DIR:-/path/to/your/photos}:rw
+    entrypoint: ["/entrypoint.sh"]
+    command: ["smart_merge"]
