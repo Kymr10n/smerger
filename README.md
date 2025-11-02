@@ -4,20 +4,20 @@
   <img src="smerger.png" alt="Photo Smart Merge Logo" width="200"/>
 </div>
 
-**Purpose:** Merge photos from on Foto-Library into another on a NAS while:
+**Purpose:** Intelligently merge photo collections while:
 - detecting **exact duplicates** (jdupes) and **visual near-duplicates** (pHash),
 - always keeping the **better** version (by type/quality/resolution/exif/size),
-- filing results into **Apple-style folders**: `YYYY/MM`,
+- filing results into **date-organized folders**: `YYYY/MM`,
 - using a **dry-run plan** first, and offering **quarantine** for replaced files.
 
-## Folder assumptions
+## Folder structure
 ```
-/volume1/@home/user/Photos/
- ├─ MobileBackup     # MASTER (destination; compared against)
- ├─ Google Fotos     # SOURCE (import from; only uniques or better variants)
+/path/to/photos/
+ ├─ master-collection     # MASTER (destination; compared against)
+ ├─ source-collection     # SOURCE (import from; only uniques or better variants)
 ```
 
-## Quick start (local build, remote deploy via Docker context)
+## Quick start (local build, remote deploy)
 
 1. **Setup environment:**
    ```bash
@@ -25,33 +25,44 @@
    # Edit .env file with your specific paths and settings
    ```
 
-2. **Setup NAS SSH connection and Docker context:**
+2. **Setup remote SSH connection and Docker context:**
    ```bash
    ./setup-nas-connection.sh
    ```
    This script will:
    - Generate SSH keys if needed
    - Configure SSH client
-   - Set up passwordless SSH access to your NAS
+   - Set up passwordless SSH access to your remote target
    - Create and test Docker context for remote deployment
    
-   **Note:** Make sure your NAS hostname is resolvable. If you have DNS issues, either:
-   - Use the NAS IP address directly in your `.env` file (`NAS_HOST=192.168.1.100`)
+   **Note:** Make sure your deployment target hostname is resolvable. If you have DNS issues, either:
+   - Use the target IP address directly in your `.env` file (`NAS_HOST=192.168.1.100`)
    - Add the hostname to your `/etc/hosts` file
-   - Configure your router/DNS properly
+   - Configure your network/DNS properly
 
 3. **Optional:** Manage Docker contexts easily:
    ```bash
-   ./docker-context.sh nas     # Switch to NAS
+   ./docker-context.sh remote  # Switch to remote target
    ./docker-context.sh local   # Switch to local
    ./docker-context.sh status  # Show current context
-   ./docker-context.sh test    # Test NAS connection
+   ./docker-context.sh test    # Test remote connection
    ```
 
 4. **Build & plan (dry-run):**
    ```bash
    docker build -t your-username/photo-smart-merge:latest .
-   docker run --rm -it          --user 1000:121          -e ROOT_DIR=/data          -e MASTER_DIR="MobileBackup"          -e SOURCE_DIR="Google Fotos"          -e DRY_RUN=1          -e PHASH_THRESHOLD=8          -e QUALITY_ORDER="raw,heic,jpeg,png,other"          -v /path/to/your/photos:/data:rw          -v /path/to/your/photos/.reports:/out:rw          -v /path/to/your/photos/.quarantine:/quarantine:rw          your-username/photo-smart-merge:latest
+   docker run --rm -it \
+     --user 1000:121 \
+     -e ROOT_DIR=/data \
+     -e MASTER_DIR="master-collection" \
+     -e SOURCE_DIR="source-collection" \
+     -e DRY_RUN=1 \
+     -e PHASH_THRESHOLD=8 \
+     -e QUALITY_ORDER="raw,heic,jpeg,png,other" \
+     -v /path/to/your/photos:/data:rw \
+     -v /path/to/your/photos/.reports:/out:rw \
+     -v /path/to/your/photos/.quarantine:/quarantine:rw \
+     your-username/photo-smart-merge:latest
    ```
 
    Check outputs:
@@ -60,7 +71,17 @@
 
 5. **Execute plan (apply):**
    ```bash
-   docker run --rm -it          --user 1000:121          -e ROOT_DIR=/data          -e MASTER_DIR="MobileBackup"          -e SOURCE_DIR="Google Fotos"          -e DRY_RUN=0          -e PHASH_THRESHOLD=8          -v /path/to/your/photos:/data:rw          -v /path/to/your/photos/.reports:/out:rw          -v /path/to/your/photos/.quarantine:/quarantine:rw          your-username/photo-smart-merge:latest
+   docker run --rm -it \
+     --user 1000:121 \
+     -e ROOT_DIR=/data \
+     -e MASTER_DIR="master-collection" \
+     -e SOURCE_DIR="source-collection" \
+     -e DRY_RUN=0 \
+     -e PHASH_THRESHOLD=8 \
+     -v /path/to/your/photos:/data:rw \
+     -v /path/to/your/photos/.reports:/out:rw \
+     -v /path/to/your/photos/.quarantine:/quarantine:rw \
+     your-username/photo-smart-merge:latest
    ```
 
 ## docker compose
@@ -97,5 +118,5 @@ All settings can be customized via the `.env` file.
 
 ## Notes
 - Replaced master files go to **quarantine** (if mounted).
-- Apple-style pathing uses EXIF `DateTimeOriginal` or `CreateDate`; fallback is file mtime.
+- Date-organized pathing uses EXIF `DateTimeOriginal` or `CreateDate`; fallback is file mtime.
 - Always confirm the **dry-run** plan before applying.
