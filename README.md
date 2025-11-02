@@ -45,7 +45,7 @@
 
 4. **Build & plan (dry-run):**
    ```bash
-   docker build -t your-username/photo-smart-merge:latest .
+   docker build -t your-username/smerger:latest .
    docker run --rm -it \
      --user 1000:121 \
      -e ROOT_DIR=/data \
@@ -57,7 +57,7 @@
      -v /path/to/your/photos:/data:rw \
      -v /path/to/your/photos/.reports:/out:rw \
      -v /path/to/your/photos/.quarantine:/quarantine:rw \
-     your-username/photo-smart-merge:latest
+     your-username/smerger:latest
    ```
 
    Check outputs:
@@ -76,7 +76,7 @@
      -v /path/to/your/photos:/data:rw \
      -v /path/to/your/photos/.reports:/out:rw \
      -v /path/to/your/photos/.quarantine:/quarantine:rw \
-     your-username/photo-smart-merge:latest
+     your-username/smerger:latest
    ```
 
 ## docker compose

@@ -1,8 +1,8 @@
 services:
-  photo-smart-merge:
+  smerger:
     build: .
-    image: your-username/photo-smart-merge:latest
-    container_name: photo-smart-merge
+    image: your-username/smerger:latest
+    container_name: smerger
     user: "${DOCKER_USER:-1000:1000}" # adjust to your NAS user uid:gid if needed
     environment:
       - TZ=${TZ:-Europe/Berlin}

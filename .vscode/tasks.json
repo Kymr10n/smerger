@@ -4,19 +4,19 @@
     {
       "label": "Build image (local or remote context)",
       "type": "shell",
-      "command": "docker build -t alex/photo-smart-merge:latest .",
+      "command": "docker build -t alex/smerger:latest .",
       "group": "build",
       "problemMatcher": []
     },
     {
       "label": "RUN: Dry-run plan",
       "type": "shell",
-      "command": "docker run --rm -it                   --user 1000:121                   -e ROOT_DIR=/data                   -e MASTER_DIR=\"MobileBackup\"                   -e SOURCE_DIR=\"Google Fotos\"                   -e DRY_RUN=1                   -e PHASH_THRESHOLD=8                   -e QUALITY_ORDER=\"raw,heic,jpeg,png,other\"                   -v /volume1/@home/alex/Photos:/data:rw                   -v /volume1/@home/alex/Photos/.reports:/out:rw                   -v /volume1/@home/alex/Photos/.quarantine:/quarantine:rw                   alex/photo-smart-merge:latest\n"
+      "command": "docker run --rm -it                   --user 1000:121                   -e ROOT_DIR=/data                   -e MASTER_DIR=\"MobileBackup\"                   -e SOURCE_DIR=\"Google Fotos\"                   -e DRY_RUN=1                   -e PHASH_THRESHOLD=8                   -e QUALITY_ORDER=\"raw,heic,jpeg,png,other\"                   -v /volume1/@home/alex/Photos:/data:rw                   -v /volume1/@home/alex/Photos/.reports:/out:rw                   -v /volume1/@home/alex/Photos/.quarantine:/quarantine:rw                   alex/smerger:latest\n"
     },
     {
       "label": "RUN: Apply plan",
       "type": "shell",
-      "command": "docker run --rm -it                   --user 1000:121                   -e ROOT_DIR=/data                   -e MASTER_DIR=\"MobileBackup\"                   -e SOURCE_DIR=\"Google Fotos\"                   -e DRY_RUN=0                   -e PHASH_THRESHOLD=8                   -v /volume1/@home/alex/Photos:/data:rw                   -v /volume1/@home/alex/Photos/.reports:/out:rw                   -v /volume1/@home/alex/Photos/.quarantine:/quarantine:rw                   alex/photo-smart-merge:latest\n"
+      "command": "docker run --rm -it                   --user 1000:121                   -e ROOT_DIR=/data                   -e MASTER_DIR=\"MobileBackup\"                   -e SOURCE_DIR=\"Google Fotos\"                   -e DRY_RUN=0                   -e PHASH_THRESHOLD=8                   -v /volume1/@home/alex/Photos:/data:rw                   -v /volume1/@home/alex/Photos/.reports:/out:rw                   -v /volume1/@home/alex/Photos/.quarantine:/quarantine:rw                   alex/smerger:latest\n"
     }
   ]
 }
